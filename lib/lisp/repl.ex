@@ -1,17 +1,17 @@
 defmodule Lisp.Repl do
   def run() do
-    env = Lisp.Env.new_root_env
-    repl_loop(env)
-  end
+    env = Lisp.EnvStash.root_env
+    repl_loop(1, env)
+ end
 
-  defp repl_loop(env) do
-    Lisp.Core.readline("elisp> ")
+  defp repl_loop(n, env) do
+    Lisp.Core.readline("elisp(#{n})> ")
       |> read_eval_print(env)
       |> IO.puts
-    repl_loop(env)
+    repl_loop(n + 1, env)
   end
 
-  defp read_eval_print(_,:eof), do: exit(:normal)
+  defp read_eval_print("exit",_), do: exit(:normal)
   defp read_eval_print(input, env) do
     read(input)
       |> eval(env)

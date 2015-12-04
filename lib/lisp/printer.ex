@@ -25,6 +25,7 @@ defmodule Lisp.Printer do
   def print_str({:list, list}) do
     "(#{print_list(list)})"
   end
+  def print_str(anything_else), do: "Not sure what to do with #{inspect anything_else}"
 
   defp print_list(list) do
     list
