@@ -1,23 +1,27 @@
 defmodule Lisp.Parser do
-  import Lisp.Types
-
-  @doc ~S"""
-  Parses a line of input. 
+  @moduledoc """
+  Parses a line of input.
 
   ## Examples
 
-    iex> Lisp.Parser.parse_str("123")
-    123
+    Literal Values
+      iex> Lisp.Parser.parse_str("123")
+      123
 
-    iex> Lisp.Parser.parse_str("+")
-    {:symbol, "+"}
+    Symbols
+      iex> Lisp.Parser.parse_str("+")
+      {:symbol, "+"}
 
-    iex> Lisp.Parser.parse_str("(1 2)")
-    {:list, [1, 2]}
+    Lists
+      iex> Lisp.Parser.parse_str("(1 2)")
+      {:list, [1, 2]}
 
-    iex> Lisp.Parser.parse_str("(+ 1 2)")
-    {:list, [{:symbol, "+"}, 1, 2]}
+    Function application - represented as a list
+      iex> Lisp.Parser.parse_str("(+ 1 2)")
+      {:list, [{:symbol, "+"}, 1, 2]}
   """
+
+  import Lisp.Types
 
   def parse_str(input) do
     case tokenize(input) do
@@ -39,7 +43,7 @@ defmodule Lisp.Parser do
   defp parse_form([first | rest]) do
     case first do
       "(" -> parse_list rest
-      _   -> 
+      _   ->
         token = parse_atom first
         {token, rest}
     end

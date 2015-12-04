@@ -1,19 +1,20 @@
 # Lisp
 
-**TODO: Add description**
+A little lisp I made in Elixir that is still a WIP.
+I aim to add some sort of distributed computing element to it (probably having
+the lisp environments shared between all repl processes).
 
-## Installation
+## Run it
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed as:
+At the moment it's easiest to just run it from iex.
 
-  1. Add lisp to your list of dependencies in `mix.exs`:
+```bash
+iex -S mix
+```
 
-        def deps do
-          [{:lisp, "~> 0.0.1"}]
-        end
+Then start the repl.
 
-  2. Ensure lisp is started before your application:
+```elixir
+Lisp.Repl.run
+```
 
-        def application do
-          [applications: [:lisp]]
-        end

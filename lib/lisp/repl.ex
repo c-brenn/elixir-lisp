@@ -1,26 +1,31 @@
 defmodule Lisp.Repl do
-  def run(), do: repl_loop
-
-  defp repl_loop do
-    Lisp.Core.readline("elisp> ")
-      |> read_eval_print
-      |> IO.puts
-    repl_loop
+  def run() do
+    env = Lisp.Env.new_root_env
+    repl_loop(env)
   end
 
-  defp read_eval_print(:eof), do: exit(:normal)
-  defp read_eval_print(input) do
+  defp repl_loop(env) do
+    Lisp.Core.readline("elisp> ")
+      |> read_eval_print(env)
+      |> IO.puts
+    repl_loop(env)
+  end
+
+  defp read_eval_print(_,:eof), do: exit(:normal)
+  defp read_eval_print(input, env) do
     read(input)
-      |> eval
+      |> eval(env)
       |> print
+  catch
+    {:error, message} -> IO.puts("Error: #{message}")
   end
 
   defp read(input) do
     Lisp.Parser.parse_str(input)
   end
 
-  defp eval(input) do
-    Lisp.Eval.evaluate(input)
+  defp eval(input, env) do
+    Lisp.Eval.evaluate(input, env)
   end
 
   defp print(input) do

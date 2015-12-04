@@ -50,8 +50,7 @@ defmodule Lisp.Env do
 
   defp _get(pid, key) do
     Agent.get(pid, fn state ->
-      {:ok, value} = Map.fetch(state.env, key)
-      value
+      {:ok, _value} = Map.fetch(state.env, key)
     end)
   end
 end
