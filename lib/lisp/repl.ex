@@ -1,6 +1,6 @@
 defmodule Lisp.Repl do
   def run() do
-    env = Lisp.Env.new_root_env
+    env = Lisp.EnvStash.root_env
     repl_loop(env)
   end
 
@@ -11,7 +11,7 @@ defmodule Lisp.Repl do
     repl_loop(env)
   end
 
-  defp read_eval_print(_,:eof), do: exit(:normal)
+  defp read_eval_print("exit",_), do: exit(:normal)
   defp read_eval_print(input, env) do
     read(input)
       |> eval(env)

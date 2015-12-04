@@ -38,14 +38,14 @@ defmodule Lisp.Eval do
   end
 
   defp eval_ast({:list, ast}, env) when is_list(ast) do
-    {:list, Enum.map(ast, fn(x) -> evaluate(x, env) end)}
+    {:list, Enum.map(ast, fn(x) -> _eval(x, env) end)}
   end
 
   defp eval_ast(ast, _env), do: ast
 
   defp eval_let_bindings([], env), do: env
   defp eval_let_bindings([{:symbol, key}, expr | _tail], env) do
-    evaluated_expr = evaluate(expr, env)
+    evaluated_expr = _eval(expr, env)
     Env.set(env, key, evaluated_expr)
     evaluated_expr
   end
@@ -54,7 +54,7 @@ defmodule Lisp.Eval do
   end
 
   defp eval_list([{:symbol, "def!"}, {:symbol, key}, value], env) do
-    evaluated = evaluate(value, env)
+    evaluated = _eval(value, env)
     Env.set(env, key, evaluated)
     evaluated
   end
@@ -62,7 +62,7 @@ defmodule Lisp.Eval do
   defp eval_list([{:symbol, "let*"}, {:list, bindings}, expression], env) do
     let_env = Env.new(env)
     eval_let_bindings(bindings, let_env)
-    evaluate(expression, let_env)
+    _eval(expression, let_env)
   end
 
   defp eval_list(list, env) do
