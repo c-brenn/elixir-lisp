@@ -17,6 +17,20 @@ defmodule Lisp.Printer do
       "(+ 1 2)"
 
   """
+  use GenServer
+
+  def start_link() do
+    GenServer.start_link(__MODULE__, [], name: __MODULE__)
+  end
+
+  def print_string(string) do
+    GenServer.call(__MODULE__, {:print_string, string})
+  end
+
+  def handle_call({:print_string, string}, _, _) do
+    {:reply, Lisp.Printer.print_str(string), []}
+  end
+
 
   def print_str(nil), do: "nil"
   def print_str({:symbol, value}), do: value

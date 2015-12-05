@@ -20,8 +20,20 @@ defmodule Lisp.Parser do
       iex> Lisp.Parser.parse_str("(+ 1 2)")
       {:list, [{:symbol, "+"}, 1, 2]}
   """
-
+  use GenServer
   import Lisp.Types
+
+  def start_link() do
+    GenServer.start_link(__MODULE__, [], name: __MODULE__ )
+  end
+
+  def parse(input) do
+    GenServer.call(__MODULE__, {:parse, input})
+  end
+
+  def handle_call({:parse, input}, _, _) do
+    {:reply, parse_str(input), []}
+  end
 
   def parse_str(input) do
     case tokenize(input) do

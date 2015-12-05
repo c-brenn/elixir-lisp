@@ -18,10 +18,11 @@ defmodule Lisp.Repl do
       |> print
   catch
     {:error, message} -> IO.puts("Error: #{message}")
+    :exit, _ -> "You done goofed"
   end
 
   defp read(input) do
-    Lisp.Parser.parse_str(input)
+    Lisp.Parser.parse(input)
   end
 
   defp eval(input, env) do
@@ -29,6 +30,6 @@ defmodule Lisp.Repl do
   end
 
   defp print(input) do
-    Lisp.Printer.print_str(input)
+    Lisp.Printer.print_string(input)
   end
 end
